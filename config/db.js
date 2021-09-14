@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const mongooseOpts = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
