@@ -10,7 +10,6 @@ const createToken = (id) => {
 };
 
 module.exports.signUp = async (req, res) => {
-    console.log(req.body);
 
     const {username, email, password} = req.body
 
@@ -26,7 +25,7 @@ module.exports.signUp = async (req, res) => {
 
 module.exports.signIn = async (req, res) => {
     const { email, password } = req.body
-    console.log(req.body);
+
     try {
         const user = await UserModel.login(email, password);
 
