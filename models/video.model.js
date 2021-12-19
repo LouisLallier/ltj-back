@@ -8,7 +8,6 @@ const videoSchema = new mongoose.Schema(
         },
         gif: {
             type: String,
-            required: true,
             default: "../assets/default.jpg"
         },
         url: {
@@ -18,6 +17,9 @@ const videoSchema = new mongoose.Schema(
         index:{
             type: Number,
             required: true
+        },
+        description:{
+            type:String,
         }
     }
 );

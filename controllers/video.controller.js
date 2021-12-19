@@ -1,42 +1,8 @@
 const VideoModel = require('../models/video.model');
 const multer = require("multer");
 const ObjectID = require('mongoose').Types.ObjectId;
+const fs = require('fs')
 
-
-//
-// module.exports.updateVideo = async (req, res) => {
-//     console.log(req.file);
-//     res.send("Single File Uploaded !");
-//     try {
-//         await VideoModel.findByIdAndUpdate(
-//             req.body._id,
-//             {$set : {gif: req.file.filename}},
-//             {new: true, upsert: true, setDefaultsOnInsert: true},
-//             (err, docs) => {
-//                 if(!err) return res.send(docs);
-//                 else return res.status(500).send({message: err})
-//             }
-//         )
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
-
-
-
-
-//
-// module.exports.addVideo = async (req, res) => {
-//     const {title, url, index} = req.body
-//
-//     try {
-//         const video = await VideoModel.create({title, gif: req.file.filename , url, index});
-//
-//         res.status(201).json({video: video._id})
-//     } catch (err) {
-//         console.log(err)
-//     }
-// };
 
 module.exports.getAllVideos = async (req, res) => {
     const users = await VideoModel.find().select('');
@@ -78,15 +44,46 @@ module.exports.updateVideo = (req, res)  => {
     }
 };
 
+// module.exports.deleteVideo = async (req, res) => {
+//     if (!ObjectID.isValid(req.params.id))
+//         return res.status(400).send("ID unknown : " + req.params.id);
+//
+//     try {
+//         console.log(req.params)
+//         await VideoModel.deleteOne({ _id: req.params.id }).exec();
+//         try {fs.unlink(`../ltj-front/public/gif/${req.params.gif}`)} catch (err) {
+//             console.log(err)}
+//         res.status(200).json({ message: "Video Successfully deleted. " });
+//     } catch (err) {
+//         return res.status(500).json({ message: err });
+//     }
+// };
+
 module.exports.deleteVideo = async (req, res) => {
+
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
+try{
 
-    try {
-        await VideoModel.deleteOne({ _id: req.params.id }).exec();
-        res.status(200).json({ message: "Video Successfully deleted. " });
+    await VideoModel.findById(req.params.id, (err, docs) => {
+        if(!err) {
+            VideoModel.deleteOne({ _id: req.params.id }).exec();
+            console.log(docs.gif)
+          fs.unlinkSync(`../../LTJ projet/ltj-front/public/gif/${docs.gif}`, (err)=>{
+              if(err) {console.log("failed to delete local image:"+err)} else {
+                  console.log('successfully deleted local image')
+              }
+          })
+
+               console.log('OK');
+        }
+        else console.log('ID unknown : ' + err);
+    });
+
     } catch (err) {
         return res.status(500).json({ message: err });
     }
+
 };
+
 

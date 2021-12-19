@@ -12,7 +12,7 @@ const connect = (dbUrl) => {
             '[DB] The database URL is not defined. If the app is hosted: have you configured the env vars? If the app is local: have you created the .env file?',
         );
     }
-    console.info(`[DB] Connecting to ${dbUrl}...`);
+    console.info(`[DB] Connecting to .ENV URL...`);
 
     mongoose
         .connect(dbUrl, mongooseOpts)
