@@ -18,13 +18,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
-app.use(cors({ origin: "https://ltj-front.herokuapp.com/" }));
+
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://ltj-front.herokuapp.com/"
-  );
+  res.setHeader("Access-Control-Allow-Origin", "*");
 
   // Request methods you wish to allow
   res.setHeader(
