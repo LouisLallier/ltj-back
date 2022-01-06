@@ -23,7 +23,7 @@ module.exports.checkUser = (req, res, next) => {
 };
 
 module.exports.requireAuth = (req, res, next) => {
-    const token = req.cookies.jwt;
+    const token = req.cookies.jwt || req.headers["x-access-token"];
     try {
         if (token) {
             jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
