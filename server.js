@@ -19,10 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
 
-var express = require("express");
-var cors = require("cors");
-var app = express();
-
 app.use(cors());
 
 app.get("/", function (req, res, next) {
