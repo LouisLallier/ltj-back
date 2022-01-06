@@ -19,35 +19,59 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
 
-const corsOptions = {
-  origin: process.env.FRONTEND_BASEURL,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-};
-app.use(cors(corsOptions));
+/* -------------------------------------------------------------------------- */
 
-// app.use(function (req, res, next) {
-//   // Website you wish to allow to connect
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//
-//   // Request methods you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   );
-//
-//   // Request headers you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "X-Requested-With,content-type"
-//   );
-//
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader("Access-Control-Allow-Credentials", true);
-//
-//   // Pass to next layer of middleware
-//   next();
-// });
+app.get("/no-cors", (req, res) => {
+  console.info("GET /no-cors");
+  res.json({
+    text: "You should not see this via a CORS request.",
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+
+app.head("/simple-cors", cors(), (req, res) => {
+  console.info("HEAD /simple-cors");
+  res.sendStatus(204);
+});
+app.get("/simple-cors", cors(), (req, res) => {
+  console.info("GET /simple-cors");
+  res.json({
+    text: "Simple CORS requests are working. [GET]",
+  });
+});
+app.post("/simple-cors", cors(), (req, res) => {
+  console.info("POST /simple-cors");
+  res.json({
+    text: "Simple CORS requests are working. [POST]",
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+
+app.options("/complex-cors", cors());
+app.delete("/complex-cors", cors(), (req, res) => {
+  console.info("DELETE /complex-cors");
+  res.json({
+    text: "Complex CORS requests are working. [DELETE]",
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+
+const issue2options = {
+  origin: true,
+  methods: ["POST"],
+  credentials: true,
+  maxAge: 3600,
+};
+app.options("/issue-2", cors(issue2options));
+app.post("/issue-2", cors(issue2options), (req, res) => {
+  console.info("POST /issue-2");
+  res.json({
+    text: "Issue #2 is fixed.",
+  });
+});
 
 // jwt
 app.get("*", checkUser);
