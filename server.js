@@ -11,6 +11,7 @@ const logger = require("morgan");
 const cors = require("cors");
 
 db.connect(process.env.MONGODB_URI);
+console.log(process.env.MONGODB_URI);
 
 app.use(express.static("public"));
 
