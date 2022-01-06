@@ -19,58 +19,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
 
-/* -------------------------------------------------------------------------- */
+var express = require("express");
+var cors = require("cors");
+var app = express();
 
-app.get("/no-cors", (req, res) => {
-  console.info("GET /no-cors");
-  res.json({
-    text: "You should not see this via a CORS request.",
-  });
+app.use(cors());
+
+app.get("/", function (req, res, next) {
+  res.json({ msg: "This is CORS-enabled for all origins!" });
 });
 
-/* -------------------------------------------------------------------------- */
-
-app.head("/simple-cors", cors(), (req, res) => {
-  console.info("HEAD /simple-cors");
-  res.sendStatus(204);
-});
-app.get("/simple-cors", cors(), (req, res) => {
-  console.info("GET /simple-cors");
-  res.json({
-    text: "Simple CORS requests are working. [GET]",
-  });
-});
-app.post("/simple-cors", cors(), (req, res) => {
-  console.info("POST /simple-cors");
-  res.json({
-    text: "Simple CORS requests are working. [POST]",
-  });
-});
-
-/* -------------------------------------------------------------------------- */
-
-app.options("/complex-cors", cors());
-app.delete("/complex-cors", cors(), (req, res) => {
-  console.info("DELETE /complex-cors");
-  res.json({
-    text: "Complex CORS requests are working. [DELETE]",
-  });
-});
-
-/* -------------------------------------------------------------------------- */
-
-const issue2options = {
-  origin: true,
-  methods: ["POST"],
-  credentials: true,
-  maxAge: 3600,
-};
-app.options("/issue-2", cors(issue2options));
-app.post("/issue-2", cors(issue2options), (req, res) => {
-  console.info("POST /issue-2");
-  res.json({
-    text: "Issue #2 is fixed.",
-  });
+app.listen(80, function () {
+  console.log("CORS-enabled web server listening on port 80");
 });
 
 // jwt
