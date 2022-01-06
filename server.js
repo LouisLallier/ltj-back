@@ -23,6 +23,7 @@ app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
 const corsOptions = {
   origin: process.env.FRONTEND_BASEURL,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  credentials: true,
 };
 app.use(cors(corsOptions));
 // jwt
