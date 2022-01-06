@@ -22,7 +22,7 @@ app.use(logger(process.env.APP_ENV === "dev" ? "dev" : "short"));
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_BASEURL);
 
   // Request methods you wish to allow
   res.setHeader(
