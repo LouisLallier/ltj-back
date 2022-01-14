@@ -1,3 +1,5 @@
+import sslRedirect from "heroku-ssl-redirect";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -12,7 +14,7 @@ const cors = require("cors");
 
 db.connect(process.env.MONGODB_URI);
 console.log(process.env.MONGODB_URI);
-
+app.use(sslRedirect());
 app.use(express.static("public"));
 
 app.use(bodyParser.json());
